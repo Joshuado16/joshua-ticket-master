@@ -1,0 +1,42 @@
+h1 {
+    font family: noto sans;
+    font size: 48px;
+    font style: italic;
+    fontcolor: #ffff00;
+    text-align: center;
+}
+
+.header {
+    background-color: #ffff00;
+    color: #fff;
+    margin-bottom: 2rem;
+    padding: 2rem 1rem;
+    text-align: left;
+}
+
+.small_headers {
+    text-align: left;
+    font size: 38px;
+    margin-right: 50xp;
+}
+
+.images {
+    display: block;
+    width: divice-width;
+    height: 600;
+    margin: auto;
+}
+
+button {
+    background-color: #ffff00;
+}
+
+input {
+    size: 40;
+    align-items: center;
+}
+
+label {
+    width: 100px;
+    display: inline-block;
+}

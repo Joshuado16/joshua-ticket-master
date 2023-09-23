@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+<div style="background-color:#ffff00">
+    <h1 style="text-align:center">Ticket Muster</h1>
+    <nav>
+
+        <a href="{{url_for('account')}}" class="small_header" style= "margin-left:50px">Login</a>
+        <a href="{{url_for('account')}}"class="small_header" style= "margin-left:50px">Register</a>
+    </nav>
+</div>
+{% endblock %}

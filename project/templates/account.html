@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}
+account
+{% endblock %}
+
+{% block main %}
+
+    <form  action="/seller" align="center" method="post" >
+        <div>
+        <input size="60" autocomplete="off"autfocus="form-control mx-auto w-auto" name="username" placeholder="username" type="text">
+        </div>
+        <div>
+        <input size="60" autocomplete="off"autfocus="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
+        </div>
+        <div>
+        <input size="60" autocomplete="off"autfocus="form-control mx-auto w-auto" name="confirm_password" placeholder="Confirm passowrd" type="password">
+        </div>
+         <div>
+            <button   type="submit">sign up</button>
+         </div>
+    </form>
+{% endblock %}

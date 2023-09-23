@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta char-set="utf-8"/>
+        <meta name="authors" content="initial-scale=1", width="device-width" >
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        <link href="/static/styles.css" rel="stylesheet">
+        <title>Ticket Muster</title>
+    </head>
+    <body>
+        <div style="background-color:#ffff00">
+            <h1 style="text-align:center">Ticket Muster</h1>
+            <nav>
+                <select class="small_header"style= "margin-left:50px" >
+
+                    <option disabled selected>menu</option>
+                    <option>contact us</option>
+                    <option>help</option>
+                </select>
+                <a class="small_header" style= "margin-left:50px">events</a>
+                <a class="small_header" style= "margin-left:50px">tickets</a>
+                <a href="{{url_for ('register')}}" class="small_header" style= "margin-left:50px">sell tickets</a>
+            </nav>
+        </div>
+        <H2 style="text-align:center">Buy and sell tickets here!</H2>
+       <img src="/templates/homepage.jpg" class="images">
+       <h4 style="font-size; text-align:center">ticket muster.com</h4>
+       <h5 style="font-size:small; text-align:center">welcome to homepage</h5>
+       <h6 style='font-size:small; text-align:center'>copyrights &#169; ticket master</h6>
+    </body>
+</html>
