@@ -47,10 +47,3 @@ def seller():
     return render_template("seller.html")
 
 
-
-
-
-
-
-
-
