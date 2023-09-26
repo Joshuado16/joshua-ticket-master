@@ -1,9 +1,10 @@
 
-
+import os
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 db = SQL("sqlite:///ticket.db")
 
@@ -45,5 +46,26 @@ def seller():
         db.execute("INSERT INTO registrants (username, password) VALUES(?, ?)",
                    request.form.get("username"),request.form.get("password"),)
     return render_template("seller.html")
+
+@app.route("/newseller", methods=["GET", "POST"])
+def newseller():
+    if request.method == "POST":
+        if not request.form.get("host"):
+            flash("please fill in host info")
+        elif not request.form.get("venue"):
+            flash("please fill in venue info")
+        elif not request.form.get("date/time"):
+            flash("enter date/time")
+        elif not request.form.get("ticket_number"):
+            flash("enter number")
+        elif not request.form.get("text"):
+            flash("enter information about ticket")
+        elif not request.form.get("file"):
+            flash("upload an image")
+        elif request.form.get(number):
+            flash("enter a number")
+     db.execute("INSERT INTO ticket_info(host, venue, date_time, ticketinfo, image, number) VALUES (?, ?, ?, ?, ?, ?)",
+    host=request.form.get("host") )
+
 
 

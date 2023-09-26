@@ -18,7 +18,7 @@
             <h1 style="text-align:center">Ticket Muster</h1>
         </div>
             <h2 style="text-align:center">register event!</h2>
-            <form align="center">
+            <form action="/newseller" align="center" method="POST">
                 <div>
                 <label class="details"> Host:</label>
                 <input size="30" autocomplete="off"autfocus="form-control mx-auto w-auto" name="host" placeholder="host" type="text">
@@ -41,18 +41,18 @@
                 </div>
                 <div>
                 <label class="detials">ticket information:</label>
-                <input class="file-upload" type="file" onchange="readURL(this)" accept="image/*">
+                <input class="file-upload" type="file" name="file" onchange="readURL(this)" accept="image/*">
                 </div>
                 <div>
                 <label class="detials">Phonenumber:</label>
                 <input style="margin-right:12px" size="30" autocomplete="off"autfocus="form-control mx-auto w-auto" name="number" placeholder="Phone number" type="int">
                 </div>
                 <div>
-                    <button style="background-color:#ffff00">register</button>
+                    <button type="submit" style="background-color:#ffff00">register</button>
                 </div>
 
 
             </form>
 
- </body>
+  </body>
 </html>
