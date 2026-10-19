@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}Events · Ticket Muster{% endblock %}
+{% block content %}
+<section>
+  <div class="section-heading"><div><p class="eyebrow">Discover something nearby</p><h1>Events</h1></div>{% if session.get('account_id') %}<a class="button" href="{{ url_for('seller') }}">List an event</a>{% endif %}</div>
+  {% if events %}
+    <div class="event-grid">
+      {% for event in events %}
+      <article class="event-card">
+        {% if event.image_data %}<img class="event-image" src="{{ url_for('event_image', event_id=event.id) }}" alt="Image for {{ event.host }}">{% endif %}
+        <div class="event-content">
+          <h2>{{ event.host }}</h2>
+          <p class="event-meta">{{ event.date_time }} · {{ event.venue }}</p>
+          <p>{{ event.ticketinfo }}</p>
+          <p><strong>{{ event.available_count }}</strong> tickets available · Listed by {{ event.seller_name }}</p>
+          {% if event.price_cents > 0 %}
+            <p class="price">ZMW {{ "%.2f"|format(event.price_cents / 100) }} per ticket</p>
+            {% if session.get('account_id') and event.available_count > 0 %}
+              <form action="{{ url_for('create_checkout', event_id=event.id) }}" method="post" class="buy-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label>Quantity<input name="quantity" type="number" min="1" max="{{ event.available_count }}" value="1" required></label>
+                <button type="submit">Continue to Flutterwave checkout</button>
+              </form>
+            {% elif event.available_count <= 0 %}
+              <p class="seller-name">Sold out</p>
+            {% else %}
+              <p><a href="{{ url_for('login') }}">Sign in to buy</a></p>
+            {% endif %}
+          {% else %}
+            <p class="seller-name">Online checkout is not set up for this older listing.</p>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state"><h2>No events listed yet</h2><p>Sign in and add the first event.</p><a href="{{ url_for('seller') }}">List an event</a></div>
+  {% endif %}
+</section>
+{% endblock %}

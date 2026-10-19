@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}Create account · Ticket Muster{% endblock %}
+{% block content %}
+<section class="form-card">
+  <h1>Create account</h1>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Username<input name="username" required autocomplete="username" maxlength="40"></label>
+    <label>Email address<input name="email_address" type="email" required autocomplete="email" maxlength="254"></label>
+    <label>Password<input name="password" type="password" required minlength="8" autocomplete="new-password"></label>
+    <label>Confirm password<input name="confirm_password" type="password" required minlength="8" autocomplete="new-password"></label>
+    <button type="submit">Create account</button>
+  </form>
+  <p>Already registered? <a href="{{ url_for('login') }}">Sign in</a>.</p>
+</section>
+{% endblock %}

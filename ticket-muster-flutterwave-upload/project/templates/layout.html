@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Ticket Muster{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('home') }}">Ticket Muster</a>
+    <nav aria-label="Main navigation">
+      <a href="{{ url_for('events') }}">Events</a>
+      {% if session.get('account_id') %}
+        <a href="{{ url_for('seller') }}">Sell tickets</a>
+        <span class="welcome">Hi, {{ session.get('username') }}</span>
+        <form class="inline-form" action="{{ url_for('logout') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="link-button" type="submit">Sign out</button></form>
+      {% else %}
+        <a href="{{ url_for('login') }}">Sign in</a>
+        <a href="{{ url_for('signup') }}">Create account</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main>
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+      <p class="notice {{ category }}" role="status">{{ message }}</p>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer>Ticket Muster · Learning project</footer>
+</body>
+</html>

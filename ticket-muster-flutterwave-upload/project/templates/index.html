@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block title %}Welcome · Ticket Muster{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">Local events, in one place</p>
+  <h1>Find your next event.</h1>
+  <p>Browse community events or create a listing for tickets you want to sell.</p>
+  <div class="actions"><a class="button" href="{{ url_for('events') }}">Browse events</a><a class="button secondary" href="{{ url_for('seller') }}">Sell tickets</a></div>
+</section>
+{% endblock %}
