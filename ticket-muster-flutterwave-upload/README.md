@@ -1,19 +1,36 @@
-# Ticket Muster
+# TicketZMK
 
-Ticket Muster is a learning prototype for listing local events and selling tickets. The uploaded repository was a partial group project. This repaired copy adds account management, event listings, and hosted payment checkout while preserving the original legacy SQLite tables. New app data uses `accounts`, `events`, and `orders`.
+TicketZMK is a learning prototype for Zambian football, Gospel, and secular event listings. It was built by repairing and extending the uploaded Ticket Muster group project. New work is described in [CHANGES.md](CHANGES.md); the original project history and contributions are not reassigned.
 
-## Run locally
+## Run locally on Windows
 
-1. Use Python 3.10 or newer.
-2. Create and activate a virtual environment.
-3. Install packages with `python -m pip install -r requirements.txt`.
-4. Copy `.env.example` to `.env`, set a random `SECRET_KEY`, and add your Flutterwave **test** secret key and dashboard webhook secret hash.
-5. Start the app with `python project/app.py` and open `http://127.0.0.1:5000`.
+From the extracted project folder in PowerShell:
 
-Create an account, sign in, list an event with a ZMW ticket price, and choose **Continue to Flutterwave checkout**. The app sends buyers to Flutterwave Standard's hosted checkout. It verifies the transaction with Flutterwave's API before marking an order paid. A signed `verif-hash` webhook can confirm payment when the buyer does not return to the site. Unpaid checkout reservations stop counting toward availability after 30 minutes.
+```powershell
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+Copy-Item .env.example .env
+.\.venv\Scripts\python.exe project\app.py
+```
 
-Configure the Flutterwave dashboard webhook URL as `https://your-domain/flutterwave-webhook`. For local testing, expose your app with a secure development tunnel and register its temporary HTTPS URL in the dashboard. Use test credentials and test payment methods while developing. Never put live keys in Git or browser code.
+Open `http://127.0.0.1:5000`. Using the virtual-environment interpreter directly avoids PowerShell script-activation policy changes. The app creates `project/ticket.db` on first run and preserves the uploaded project's legacy tables.
 
-Flutterwave lists local Zambian mobile-money and card payment options, but live processing requires an approved merchant account and credentials. Flutterwave charges transaction fees; this code and its source archive are free. Ticket Muster is a prototype: it does not transfer seller payouts, issue scannable tickets, process refunds, or provide a complete dispute workflow. Do not use it for real sales before a security and operations review.
+Set a private random `SECRET_KEY` and Flutterwave test credentials in `.env` to test hosted checkout. Set `COOKIE_SECURE=true` only when serving over HTTPS. Never commit `.env` or live payment keys.
 
-The SQLite database is intentionally excluded from the upload package. On first run the app creates the new tables in `project/ticket.db`; this avoids publishing the original repository's sample user records.
+## Current features
+
+- TicketZMK landing page inspired by the provided reference screenshots: deep teal and aqua palette, event hero, live counts, category cards, and mobile layout.
+- Email or username sign-in, hashed passwords, CSRF-protected forms, password visibility controls, a 15-minute lock after repeated failed logins, secure cookie settings, and signed-in password changes.
+- Buyer accounts and free organizer profiles.
+- Football, Gospel, and secular event listings with city, event details, poster, date, price, and availability.
+- Event details, category/search filters, authenticated buyer checkout through Flutterwave Standard, and reserve-at-door bookings.
+- Buyer ticket history with booking references; organizer dashboard with event counts and confirmed online revenue; owner-only event editing/cancellation.
+- Admin overview and event moderation. Create your account first, then promote it from the project folder with `python project/app.py promote-admin you@example.com` (use the virtual-environment Python path above in PowerShell).
+
+## Integrations and prototype limits
+
+Online checkout redirects to Flutterwave's hosted checkout. The app verifies transactions with Flutterwave before marking an order paid. Checkout will not start until valid test credentials are configured. A live account, public HTTPS webhook address, payout setup, and production deployment are not included.
+
+This version uses one ticket price per event. It does not yet have multi-tier pricing, football seat maps, scannable QR codes, confirmation email, OTP/email verification, Google sign-in, self-service email password reset, organizer listing fees, refunds, or payout/dispute management. The reference plan mentions these; they need additional providers, credentials, and implementation before real ticket sales. The app is not production-ready.
+
+The reference Base44 app remains separate; these source changes apply to this Flask project. The upload ZIP excludes the local SQLite database, `.env`, and Python cache files.

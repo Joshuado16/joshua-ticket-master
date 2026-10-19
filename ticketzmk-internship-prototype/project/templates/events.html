@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block title %}Events · TicketZMK{% endblock %}
+{% block content %}
+<section class="events-section events-page">
+  <div class="section-heading events-heading"><div><p class="eyebrow">Your next great memory is out there</p><h1>Find your event</h1><p>Browse football, Gospel and secular events across Zambia.</p></div><a class="button button-primary" href="{{ url_for('organizer_register') if session.get('account_id') else url_for('signup') }}">＋ List Your Event</a></div>
+  <div class="event-toolbar">
+    <label class="event-search"><span aria-hidden="true">⌕</span><input id="event-search" type="search" placeholder="Search event, venue, or city" aria-label="Search events"></label>
+    <div class="filter-row" role="group" aria-label="Filter events"><button class="filter-chip active" type="button" data-filter="all">All events</button><button class="filter-chip" type="button" data-filter="football">Football</button><button class="filter-chip" type="button" data-filter="gospel">Gospel</button><button class="filter-chip" type="button" data-filter="secular">Secular</button></div>
+  </div>
+  {% if events %}
+    <p class="results-count" id="results-count" aria-live="polite"></p>
+    <div class="event-grid" id="event-grid">
+      {% for event in events %}
+      <article class="event-card" data-event-card data-category="{{ event.event_type }}" data-search="{{ (event.host ~ ' ' ~ event.venue ~ ' ' ~ event.city ~ ' ' ~ event.ticketinfo)|lower }}">
+        <a class="event-card-link" href="{{ url_for('event_detail', event_id=event.id) }}" aria-label="Details for {{ event.host }}">
+          {% if event.image_data or event.demo_image %}<img class="event-image" src="{{ url_for('event_image', event_id=event.id) }}" alt="Poster for {{ event.host }}">{% else %}<div class="event-image-placeholder category-{{ event.event_type }}"><span>{{ event.event_type|title }}</span></div>{% endif %}
+          <div class="event-content"><div class="event-labels"><span class="category-label category-{{ event.event_type }}">{{ event.event_type|title }}</span>{% if event.demo_image %}<span class="demo-label">DEMO LISTING</span>{% endif %}</div><h2>{{ event.host }}</h2><p class="event-meta">▣ {{ event.date_time }}</p><p class="event-venue">⌖ {{ event.venue }}, {{ event.city }}</p><p class="event-description">{{ event.ticketinfo }}</p><div class="event-card-foot"><strong>{% if event.price_cents > 0 %}From ZMW {{ "%.2f"|format(event.price_cents / 100) }}{% else %}Contact organizer{% endif %}</strong><span class="availability">{{ event.available_count }} left</span></div><span class="seller-name">Organized by {{ event.organizer_name }}</span></div>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+    <div class="empty-state" id="no-filter-results" hidden><h2>No matching events</h2><p>Try another category or search term.</p></div>
+  {% else %}
+    <div class="empty-state"><h2>No events listed yet</h2><p>Be the first to bring people together.</p><a class="button" href="{{ url_for('organizer_register') if session.get('account_id') else url_for('signup') }}">List the first event</a></div>
+  {% endif %}
+</section>
+<script>
+(() => {
+  const cards = [...document.querySelectorAll('[data-event-card]')];
+  const search = document.getElementById('event-search');
+  const count = document.getElementById('results-count');
+  const filters = [...document.querySelectorAll('[data-filter]')];
+  const empty = document.getElementById('no-filter-results');
+  let active = 'all';
+  const update = () => {
+    const query = (search?.value || '').trim().toLowerCase();
+    let visible = 0;
+    cards.forEach(card => {
+      const matches = (active === 'all' || card.dataset.category === active) && card.dataset.search.includes(query);
+      card.hidden = !matches;
+      if (matches) visible++;
+    });
+    if (count) count.textContent = `${visible} ${visible === 1 ? 'event' : 'events'} found`;
+    if (empty) empty.hidden = visible !== 0;
+  };
+  search?.addEventListener('input', update);
+  filters.forEach(button => button.addEventListener('click', () => {
+    active = button.dataset.filter;
+    filters.forEach(item => item.classList.toggle('active', item === button));
+    update();
+  }));
+  update();
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}
+Signin
+{% endblock %}
+
+{% block main %}
+ <form action="/signin" align="center" method="post" >
+    <div>
+    <input size="60" align="center" autocomplete="off"autfocus="form-control mx-auto w-auto" name="username" placeholder="username" type="text">
+    </div>
+    <div>
+    <input size="60" autocomplete="off"autfocus="form-control mx-auto w-auto" name="email_address" placeholder="email adress" type="text">
+    </div>
+    <button  type="submit">sign up</button>
+   </form>
+{% endblock %}

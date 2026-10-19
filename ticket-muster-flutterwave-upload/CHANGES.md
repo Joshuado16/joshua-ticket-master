@@ -14,6 +14,10 @@ The repository does not establish which group member authored each original sect
 - Event listings with price, ticket capacity, and optional image.
 - Flutterwave Standard hosted checkout using ZMW, with payment verification before an order is marked paid.
 - A signed Flutterwave webhook, CSRF protection on browser forms, and a 30-minute inventory hold while checkout is open.
+- A refreshed responsive Ticket Muster visual theme, event search and filters, and a clearer Flutterwave checkout label.
+- TicketZMK teal/aqua home and event pages based on the supplied screenshots, responsive event cards, category filters, and event detail pages.
+- Buyer ticket history, booking references, optional door-payment reservations, free organizer profiles, an owner-only event dashboard, event editing/cancellation, and an admin moderation view.
+- Email-or-username sign-in, stronger minimum password length for new accounts, hashed passwords, short lockouts after repeated bad logins, secure session-cookie settings, and password changes.
 - Setup files and instructions. The database and live secrets are excluded from the upload archive.
 
-This integration is new work for the repaired learning copy. It has not been tested against a live or sandbox Flutterwave account because no merchant credentials were provided.
+This integration is new work for the repaired learning copy. It has not been tested against a live or sandbox Flutterwave account because no merchant credentials were provided. Email confirmation, OTP, password reset delivery, Google sign-in, ticket tiers, seat maps, QR tickets, and automated email remain future work.

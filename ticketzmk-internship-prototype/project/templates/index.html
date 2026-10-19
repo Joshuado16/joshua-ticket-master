@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block title %}TicketZMK · Live Events, Unforgettable Moments{% endblock %}
+{% block content %}
+<section class="hero hero-home">
+  <div class="hero-copy">
+    <p class="hero-badge"><span aria-hidden="true">★</span> Zambia's Premier Event Ticketing Platform</p>
+    <h1>Live Events,<br><span>Unforgettable</span><br>Moments</h1>
+    <p>Football matches, Gospel concerts, secular shows — find your next experience and secure your seat today.</p>
+    <div class="actions"><a class="button button-cyan" href="{{ url_for('events') }}">Browse Events <span aria-hidden="true">→</span></a><a class="button button-glass" href="{{ url_for('organizer_register') if session.get('account_id') else url_for('signup') }}">List Your Event</a></div>
+  </div>
+  <a class="hero-scroll" href="#upcoming">Scroll to discover <span aria-hidden="true">↓</span></a>
+</section>
+
+<section class="stats-strip" aria-label="Live platform statistics">
+  <div><strong>{{ stats.events }}</strong><span>Events Live</span></div>
+  <div><strong>{{ stats.football }}</strong><span>Football Matches</span></div>
+  <div><strong>{{ stats.music }}</strong><span>Concerts</span></div>
+</section>
+
+<section class="events-section" id="upcoming">
+  <div class="section-heading events-heading"><div><p class="eyebrow">Plan your next outing</p><h2>Upcoming Events</h2><p>Discover and book your next live experience</p></div>
+    <div class="category-filters" role="group" aria-label="Filter events by category">
+      <button class="category-chip active" type="button" data-category-filter="all">☆ <span>All Events</span></button>
+      <button class="category-chip" type="button" data-category-filter="football">♜ <span>Football</span></button>
+      <button class="category-chip" type="button" data-category-filter="gospel">♫ <span>Gospel</span></button>
+      <button class="category-chip" type="button" data-category-filter="secular">♫ <span>Secular</span></button>
+    </div>
+  </div>
+  {% if events %}
+    <div class="event-grid home-event-grid">
+      {% for event in events %}
+      <article class="event-card home-event-card" data-event-category="{{ event.event_type }}">
+        <a class="event-card-link" href="{{ url_for('event_detail', event_id=event.id) }}" aria-label="View {{ event.host }}">
+          {% if event.image_data or event.demo_image %}<img class="event-image" src="{{ url_for('event_image', event_id=event.id) }}" alt="Poster for {{ event.host }}">{% else %}<div class="event-image-placeholder category-{{ event.event_type }}"><span>{{ event.event_type|title }}</span></div>{% endif %}
+          <div class="event-content"><div class="event-labels"><span class="event-category category-label category-{{ event.event_type }}">{{ event.event_type|title }}</span>{% if event.demo_image %}<span class="demo-label">DEMO LISTING</span>{% endif %}</div><h3>{{ event.host }}</h3><p class="event-meta">{{ event.date_time }} · {{ event.city }}</p><p class="event-venue">{{ event.venue }}</p><div class="event-card-foot"><strong>{% if event.price_cents > 0 %}From ZMW {{ "%.2f"|format(event.price_cents / 100) }}{% else %}Contact organizer{% endif %}</strong><span class="book-pill">Details →</span></div></div>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="home-empty-filter" id="home-empty-filter" hidden>No events in this category yet.</p>
+  {% else %}
+    <div class="empty-state"><h3>Your next big moment starts here</h3><p>There are no public events yet. Create your organizer profile and list the first one.</p><a class="button" href="{{ url_for('organizer_register') if session.get('account_id') else url_for('signup') }}">Get started</a></div>
+  {% endif %}
+  <div class="center-actions"><a class="button button-outline" href="{{ url_for('events') }}">Explore all events <span aria-hidden="true">→</span></a></div>
+</section>
+
+<section class="organizer-cta"><div><p class="eyebrow">For event organizers</p><h2>Make your next event the one everyone talks about.</h2><p>Create a free organizer profile, list an event, and let more people find it.</p></div><a class="button button-cyan" href="{{ url_for('organizer_register') if session.get('account_id') else url_for('signup') }}">Start organizing <span aria-hidden="true">→</span></a></section>
+
+<script>
+(() => {
+  const cards = [...document.querySelectorAll('[data-event-category]')];
+  const filters = [...document.querySelectorAll('[data-category-filter]')];
+  const empty = document.getElementById('home-empty-filter');
+  filters.forEach(button => button.addEventListener('click', () => {
+    filters.forEach(item => item.classList.toggle('active', item === button));
+    let shown = 0;
+    cards.forEach(card => {
+      const visible = button.dataset.categoryFilter === 'all' || card.dataset.eventCategory === button.dataset.categoryFilter;
+      card.hidden = !visible;
+      if (visible) shown++;
+    });
+    if (empty) empty.hidden = shown !== 0;
+  }));
+})();
+</script>
+{% endblock %}

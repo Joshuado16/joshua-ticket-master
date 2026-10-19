@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Payment status · Ticket Muster{% endblock %}
+{% block title %}Payment status · TicketZMK{% endblock %}
 {% block content %}
 <section class="form-card">
   {% if order.status == "paid" %}
@@ -13,7 +13,7 @@
   {% else %}
     <p class="eyebrow">Waiting for payment confirmation</p>
     <h1>Your payment is processing</h1>
-    <p>Ticket Muster is waiting for a verified payment update from Flutterwave. Refresh this page in a moment.</p>
+    <p>TicketZMK is waiting for a verified payment update from Flutterwave. Refresh this page in a moment.</p>
   {% endif %}
   <a class="button" href="{{ url_for('events') }}">Back to events</a>
 </section>

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}List an event · TicketZMK{% endblock %}
+{% block content %}
+<section class="form-card wide">
+  <p class="eyebrow">Organizer studio</p><h1>List your event</h1>
+  <p>Share the details people need to show up. Ticket prices are entered in Zambian kwacha (ZMW).</p>
+  <form action="{{ url_for('newseller') }}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Event or host name<input name="host" required maxlength="120"></label>
+    <label>Event category<select name="event_type" required><option value="football">Football</option><option value="gospel">Gospel</option><option value="secular">Secular</option></select></label>
+    <label>Venue<input name="venue" required maxlength="160"></label>
+    <label>City<input name="city" value="Lusaka" required maxlength="80"></label>
+    <label>Date and time<input name="date_time" type="datetime-local" required></label>
+    <label>Number of tickets<input name="ticket_count" type="number" min="1" step="1" required></label>
+    <label>Price per ticket (ZMW)<input name="price" type="number" min="0.01" step="0.01" required></label>
+    <label>Event details<textarea name="description" rows="4" required maxlength="2000"></textarea></label>
+    <label>Contact phone<input name="phone" type="tel" required maxlength="40"></label>
+    <label>Event image (optional)<input name="image" type="file" accept="image/jpeg,image/png,image/gif,image/webp"></label>
+    <button type="submit">Publish event <span aria-hidden="true">→</span></button>
+  </form>
+</section>
+{% endblock %}
