@@ -1,8 +1,0 @@
-{% extends "layout.html" %}
-{% block title %}My Tickets · TicketZMK{% endblock %}
-{% block content %}
-<section class="dashboard-page"><div class="section-heading"><div><p class="eyebrow">Your plans, all in one place</p><h1>My Tickets</h1><p>Keep your booking references ready for event day.</p></div><a class="button button-primary" href="{{ url_for('events') }}">Find another event</a></div>
-  {% if tickets %}<div class="ticket-list">{% for ticket in tickets %}<article class="ticket-pass"><div class="ticket-pass-main"><span class="category-label category-{{ ticket.event_type }}">{{ ticket.event_type|title }}</span><h2>{{ ticket.host }}</h2><p>{{ ticket.date_time }} · {{ ticket.venue }}, {{ ticket.city }}</p><p>{{ ticket.quantity }} ticket{{ '' if ticket.quantity == 1 else 's' }} · {{ 'Door reservation' if ticket.payment_method == 'door' else 'Online checkout' }}</p></div><div class="ticket-pass-ref"><small>BOOKING REFERENCE</small><strong>{{ ticket.id[:8]|upper }}</strong><span class="status-pill status-{{ ticket.status }}">{{ ticket.status|title }}</span></div></article>{% endfor %}</div>
-  {% else %}<div class="empty-state"><h2>No tickets yet</h2><p>When you book or reserve an event, your ticket reference will appear here.</p><a class="button" href="{{ url_for('events') }}">Browse events</a></div>{% endif %}
-</section>
-{% endblock %}
