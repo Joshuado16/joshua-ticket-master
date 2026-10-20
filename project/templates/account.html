@@ -1,22 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}
-account
-{% endblock %}
-
-{% block main %}
-
-    <form  action="/seller" align="center" method="post" >
-        <div>
-        <input size="60" autocomplete="off"autfocus="form-control mx-auto w-auto" name="username" placeholder="username" type="text">
-        </div>
-        <div>
-        <input size="60" autocomplete="off"autfocus="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
-        </div>
-        <div>
-        <input size="60" autocomplete="off"autfocus="form-control mx-auto w-auto" name="confirm_password" placeholder="Confirm passowrd" type="password">
-        </div>
-         <div>
-            <button   type="submit">sign up</button>
-         </div>
-    </form>
+{% block title %}Account Settings · TicketZMK{% endblock %}
+{% block content %}
+<section class="dashboard-page"><div class="section-heading"><div><p class="eyebrow">Your account</p><h1>Account settings</h1><p>Manage your sign-in details.</p></div></div><div class="account-grid"><article class="form-card account-card"><h2>Profile</h2><dl class="account-details"><dt>Username</dt><dd>{{ account.username }}</dd><dt>Email</dt><dd>{{ account.email }}</dd><dt>Account type</dt><dd>{{ account.role|title }}</dd></dl><p class="form-hint">Email changes and verification will be available after email delivery is configured.</p></article><article class="form-card account-card"><h2>Change password</h2><form action="{{ url_for('change_password') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Current password<input name="current_password" type="password" required autocomplete="current-password"></label><label>New password<input name="new_password" type="password" minlength="10" required autocomplete="new-password"></label><label>Confirm new password<input name="confirm_password" type="password" minlength="10" required autocomplete="new-password"></label><button type="submit">Update password</button></form></article></div></section>
 {% endblock %}

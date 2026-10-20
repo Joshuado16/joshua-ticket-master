@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}{{ event.host }} · TicketZMK{% endblock %}
+{% block content %}
+<section class="detail-page">
+  <a class="back-link" href="{{ url_for('events') }}">← Back to events</a>
+  <article class="detail-card">
+    <div class="detail-cover">
+      {% if event.image_data or event.demo_image %}<img class="detail-image" src="{{ url_for('event_image', event_id=event.id) }}" alt="Poster for {{ event.host }}">{% else %}<div class="event-image-placeholder category-{{ event.event_type }}"><span>{{ event.event_type|title }}</span></div>{% endif %}
+      <span class="category-label category-{{ event.event_type }}">{{ event.event_type|title }}</span>
+    </div>
+    <div class="detail-body"><div class="detail-main">{% if event.demo_image %}<p class="demo-notice">Sample listing for preview only. This is not a confirmed real event.</p>{% endif %}<p class="eyebrow">{{ event.city }} · Organized by {{ event.organizer_name }}</p><h1>{{ event.host }}</h1><p class="detail-meta">▣ {{ event.date_time }}<br>⌖ {{ event.venue }}, {{ event.city }}</p><div class="detail-description">{{ event.ticketinfo }}</div><div class="organizer-mini"><span class="avatar">{{ event.organizer_name[:1]|upper }}</span><span><strong>{{ event.organizer_name }}</strong><small>Event organizer</small></span></div></div>
+      <aside class="booking-panel"><p class="eyebrow">Your ticket</p>{% if event.price_cents > 0 %}<h2>ZMW {{ "%.2f"|format(event.price_cents / 100) }} <small>/ person</small></h2>{% else %}<h2>Price on request</h2>{% endif %}<p>{{ event.available_count }} ticket{{ '' if event.available_count == 1 else 's' }} available</p>
+        {% if event.demo_image %}<p class="demo-notice">Demo listings are for preview only. Ticket booking and payment are disabled.</p>{% elif event.available_count > 0 %}
+          {% if session.get('account_id') %}
+            {% if event.price_cents > 0 %}<form action="{{ url_for('create_checkout', event_id=event.id) }}" method="post" class="booking-form"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Tickets<select name="quantity">{% for quantity in range(1, [event.available_count, 8]|min + 1) %}<option value="{{ quantity }}">{{ quantity }}</option>{% endfor %}</select></label><button class="button-pay" type="submit">Pay with Flutterwave <span aria-hidden="true">→</span></button><p class="payment-note">Secure hosted checkout in ZMW</p></form>{% else %}<p class="payment-note">Ask the organizer about ticket pricing.</p>{% endif %}
+            <form action="{{ url_for('reserve_at_door', event_id=event.id) }}" method="post" class="door-form"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="quantity" value="1"><button class="button-outline" type="submit">Reserve 1 for door payment</button></form>
+          {% else %}<a class="button button-primary full-button" href="{{ url_for('login', next=url_for('event_detail', event_id=event.id)) }}">Sign in to book</a><p class="form-hint">New to TicketZMK? <a href="{{ url_for('signup') }}">Create an account</a>.</p>{% endif %}
+        {% else %}<p class="sold-out">Tickets are currently sold out.</p>{% endif %}
+      </aside>
+    </div>
+  </article>
+</section>
+{% endblock %}
